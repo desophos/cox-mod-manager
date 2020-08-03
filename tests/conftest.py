@@ -2,16 +2,18 @@ import shutil
 from pathlib import Path
 
 import pytest
-from cox_mod_manager.main import discover
-from cox_mod_manager.mod import Mod
+from cox_mod_manager.context import context
 
 
 @pytest.fixture(scope="session")
-def mods(tmp_path_factory):
+def ctx(tmp_path_factory):
     # TODO: create test mods programmatically
-    Mod.mods_dir = tmp_path_factory.mktemp("mods")
-    Mod.install_dir = tmp_path_factory.mktemp("install")
-    shutil.copy(Path("tests/mods/testmod.zip"), Mod.mods_dir)
-    shutil.copy(Path("tests/mods/testmod2.zip"), Mod.mods_dir)
-    yield discover()
+    mods_dir = tmp_path_factory.mktemp("mods")
+    install_dir = tmp_path_factory.mktemp("install")
+    shutil.copy(Path("tests/mods/testmod.zip"), mods_dir)
+    shutil.copy(Path("tests/mods/testmod2.zip"), mods_dir)
+    with context(
+        root=tmp_path_factory.getbasetemp(), mods_dir=mods_dir, install_dir=install_dir
+    ) as ctx:
+        yield ctx
     # TODO: delete temp files

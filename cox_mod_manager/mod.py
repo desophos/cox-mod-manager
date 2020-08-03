@@ -6,12 +6,12 @@ from cox_mod_manager.utility import remove_empty_dirs
 
 
 class Mod:
-    mods_dir = Path("./tmp/mods")
-    install_dir = Path("./tmp/install")
-
-    def __init__(self, filename: str, files: Iterable[Path], **info) -> None:
+    def __init__(
+        self, filename: str, files: Iterable[Path], install_dir: Path, **info
+    ) -> None:
         self.filename = filename
         self.files = files
+        self.install_dir = install_dir
         self.name = info["name"]
         self.author = info.get("author")
         self.version = info.get("version")

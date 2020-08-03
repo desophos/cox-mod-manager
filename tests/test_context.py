@@ -9,9 +9,12 @@ testmods = {
 }
 
 
-def test_discover(mods):
-    assert sorted(mods.keys()) == sorted(testmods.keys())
+def test_discover(ctx):
+    assert sorted(ctx.mods.keys()) == sorted(testmods.keys())
     for name, paths in testmods.items():
-        mod = mods[name]
+        mod = ctx.mods[name]
         for path in paths:
             assert path in mod.files
+
+
+# TODO: enter/exit tests
