@@ -5,18 +5,17 @@ from cox_mod_manager.mod import Mod
 
 
 def encode_paths(it):
+    if isinstance(it, Path):
+        return str(it)  # do the actual encoding
     if isinstance(it, str):  # str is iterable, so it would recurse infinitely
         return it
-    try:
+    try:  # recurse into dict
         return {k: encode_paths(v) for k, v in it.items()}
     except AttributeError:  # not a dict
-        try:
+        try:  # recurse into iterable
             return list(map(encode_paths, it))
         except TypeError:  # not iterable
-            if isinstance(it, Path):
-                return str(it)
-            else:
-                return it
+            return it
 
 
 class ModEncoder(JSONEncoder):
