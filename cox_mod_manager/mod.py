@@ -20,6 +20,9 @@ class Mod:
     def name(self):
         return self.info["name"]
 
+    def __eq__(self, other):
+        return vars(self) == vars(other)
+
     def install_path(self, path: Path = Path()) -> Path:
         return self.install_dir / self.name / path
 
