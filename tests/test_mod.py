@@ -1,6 +1,3 @@
-from cox_mod_manager.mod import Mod
-
-
 def test_install(ctx):
     for mod in ctx.mods.values():
         mod.install()
