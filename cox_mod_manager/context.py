@@ -58,7 +58,7 @@ class ModsContext:
                                 if not f.is_dir() and not f.filename == "info.json"
                             ],
                             self.install_dir,
-                            **json.load(info),
+                            json.load(info),
                         )
                     )
 

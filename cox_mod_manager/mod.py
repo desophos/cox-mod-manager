@@ -7,14 +7,18 @@ from cox_mod_manager.utility import remove_empty_dirs
 
 class Mod:
     def __init__(
-        self, filename: str, files: Iterable[Path], install_dir: Path, **info
+        self, filename: str, files: Iterable[Path], install_dir: Path, info
     ) -> None:
         self.filename = filename
         self.files = files
         self.install_dir = install_dir
-        self.name = info["name"]
-        self.author = info.get("author")
-        self.version = info.get("version")
+        if "name" not in info:
+            raise KeyError("info must include name")
+        self.info = info
+
+    @property
+    def name(self):
+        return self.info["name"]
 
     def install_path(self, path: Path = Path()) -> Path:
         return self.install_dir / self.name / path
