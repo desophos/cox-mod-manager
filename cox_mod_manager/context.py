@@ -1,7 +1,7 @@
 import json
 from functools import lru_cache
 from pathlib import Path
-from typing import Dict, Set
+from typing import Dict, List, Set
 from zipfile import ZipFile
 
 from cox_mod_manager.json import ModEncoder, decode_mod
@@ -44,12 +44,12 @@ class ModsContext:
     def discover(self) -> Dict[str, Mod]:
         # inspect zipfile for mod name and structure
         # TODO: handle zipfiles with improper structure
-        mods: Set[Mod] = set()
+        mods: List[Mod] = []
         for zmod in filter(lambda f: f.suffix == ".zip", self.mods_dir.iterdir()):
             with ZipFile(zmod) as zf:
                 with zf.open("info.json") as info:
                     assert zf.filename is not None
-                    mods.add(
+                    mods.append(
                         Mod(
                             zf.filename,
                             [
