@@ -18,7 +18,7 @@ class ModsContext:
         self.mods: Dict[str, Mod] = {}  # {name: Mod}
         self.installed: Set[str] = set()
 
-        for path in [self.mods_dir, self.install_dir]:
+        for path in (self.mods_dir, self.install_dir):
             if not path.exists():
                 path.mkdir(parents=True)
 
@@ -47,8 +47,8 @@ class ModsContext:
         mods: List[Mod] = []
         for zmod in filter(lambda f: f.suffix == ".zip", self.mods_dir.iterdir()):
             with ZipFile(zmod) as zf:
+                assert zf.filename is not None
                 with zf.open("info.json") as info:
-                    assert zf.filename is not None
                     mods.append(
                         Mod(
                             zf.filename,
