@@ -4,7 +4,7 @@ from pathlib import Path
 from typing import Dict, Set
 from zipfile import ZipFile
 
-from cox_mod_manager.json import ModDecoder, ModEncoder
+from cox_mod_manager.json import ModEncoder, decode_mod
 from cox_mod_manager.mod import Mod
 
 
@@ -25,7 +25,7 @@ class ModsContext:
     def __enter__(self):
         try:
             with open(self.root / "mods.json") as f:
-                data = json.load(f, cls=ModDecoder)
+                data = json.load(f, object_hook=decode_mod)
                 self.mods = data["mods"]
                 self.installed = set(data["installed"])
         except FileNotFoundError:

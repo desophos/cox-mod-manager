@@ -1,4 +1,4 @@
-from json import JSONDecoder, JSONEncoder
+from json import JSONEncoder
 from pathlib import Path
 
 from cox_mod_manager.mod import Mod
@@ -25,12 +25,13 @@ class ModEncoder(JSONEncoder):
         return JSONEncoder.default(self, o)
 
 
-class ModDecoder(JSONDecoder):
-    def object_hook(self, o):
-        if all(key in o for key in ["filename", "files", "install_dir", "name"]):
-            info = {k: v for k, v in o.items() if k in ("name", "author", "version")}
-            return Mod(
-                o["filename"], map(Path, o["files"]), Path(o["install_dir"]), info
-            )
-        else:
-            return JSONDecoder.decode(self, o)
+def decode_mod(o):
+    if all(key in o for key in ["filename", "files", "install_dir", "info"]):
+        return Mod(
+            o["filename"],
+            list(map(Path, o["files"])),
+            Path(o["install_dir"]),
+            o["info"],
+        )
+    else:
+        return o
