@@ -85,7 +85,7 @@ if __name__ == "__main__":
     while True:
         try:
             print("Enter command:", end=" ")
-            args = parser.parse_args(
+            args = parser.parse_args(  # type: ignore
                 m[1] or m[2] for m in re.finditer(input_re, input())
             )
             if hasattr(args, "exit"):
